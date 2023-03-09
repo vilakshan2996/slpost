@@ -13,6 +13,7 @@ dependencies:
   firebase_core:
   cloud_firestore: ^4.4.3
   velocity_x: ^3.6.0
+  flutter_svg:
   flutter: 
     sdk: flutter
 
@@ -25,4 +26,5 @@ flutter:
   uses-material-design: true
   assets:
       - assets/fitness_app/
+      - assets/icons/
 

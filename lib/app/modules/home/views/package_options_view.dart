@@ -6,8 +6,9 @@ import 'package:velocity_x/velocity_x.dart';
 
 
 class PackageOptionsView extends StatefulWidget {
-  const PackageOptionsView(
-      {Key? key})
+  List<ParcelType> listOfMails;
+  PackageOptionsView(
+      {Key? key,required this.listOfMails})
       : super(key: key);
 
 
@@ -43,15 +44,42 @@ class _PackageOptionsViewState extends State<PackageOptionsView>
     
     return  VStack(
         [
+          HStack(
+            [
+              VxBox(
+            child: TextField(
+              keyboardType: TextInputType.number,
+            decoration: InputDecoration(
+              enabledBorder:OutlineInputBorder(
+                
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide(color: Color(0xff6F72CA))),
+                
+             
+              contentPadding: EdgeInsets.all(10),
+              filled: true,
+              fillColor: Color.fromARGB(255, 247, 247, 247),
+              hintText: 'Enter the weight',
+              suffixText: "g",
+              
+              prefixIcon: Icon(Icons.line_weight)
+            ),
+          ),
+          ).width(Get.width*0.15).make(),
+
+          //https://pub.dev/packages/circle_flags , use this to have a flag icon
+            ]
+          ),
+          
           
            Expanded(
              child: GridView.builder(
                       padding: const EdgeInsets.only(
                           top: 0, bottom: 0, right: 16, left: 16),
-                      itemCount: Mails.seamails.length,
+                      itemCount: widget.listOfMails.length,
                       itemBuilder: (BuildContext context, int index) {
                         final int count =
-                            Mails.seamails.length > 10 ? 10 : Mails.seamails.length;
+                            widget.listOfMails.length > 10 ? 10 : widget.listOfMails.length;
                         final Animation<double> animation =
                             Tween<double>(begin: 0.0, end: 1.0).animate(
                                 CurvedAnimation(
@@ -61,7 +89,7 @@ class _PackageOptionsViewState extends State<PackageOptionsView>
                         animationController?.forward();
                
                         return PackageView(
-                          mealsListData: Mails.seamails[index],
+                          mealsListData: widget.listOfMails[index],
                           animation: animation,
                           animationController: animationController!,
                         );
@@ -339,4 +367,8 @@ class FitnessAppTheme {
     color: lightText, // was lightText
   );
 }
+
+
+
+
 

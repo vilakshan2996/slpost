@@ -4,26 +4,28 @@ import 'package:slpost/app/data/services/firebase_services.dart';
 
 class HomeController extends GetxController {
   //TODO: Implement HomeController
-  var isInitialized = false.obs;
   
-  
-  final count = 0.obs;
 
 
   var selectedIndex = 0.obs;
+  var isHover = false.obs; 
+  var hoverIndex = (-1).obs; // observable variable
+
 
   void changeSelectedIndex(int index) {
-    print(index);
     selectedIndex.value = index;
+    update();
+  }
+
+  void changeHover(bool value,int index) {
+    isHover.value = value; // update value
+    hoverIndex.value = index;
+    update(); // update GetX widget
   }
 
 
   @override
   void onInit() async {
-    // await FirebaseServices.getRate();
-    print("Firestore services is accepted before building the Home View");
-    isInitialized.value = true;
-    update();
     super.onInit();
   }
 
@@ -39,5 +41,5 @@ class HomeController extends GetxController {
 
 
 
-  void increment() => count.value++;
+ 
 }
