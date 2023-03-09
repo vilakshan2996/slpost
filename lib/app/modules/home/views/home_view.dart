@@ -38,7 +38,13 @@ class HeroMenu extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,          
                 children: [
                   ElevatedButton(
-                    onPressed: () => FirebaseServices.getRate(),
+                    onPressed: ()async {
+                      
+                      // await FirebaseServices.updateDocument();
+                      // await FirebaseServices.getRate();
+                      // ParcelRates parcelRate = ParcelRates.parcelRate;
+                      // parcelRate.letter.calculateTotalCharges(26,parcelRate.registrationFees);   
+                    } ,
                     child: Text('Option 1'),
                   ),
                   
@@ -71,7 +77,7 @@ class HeroMainSection extends StatelessWidget {
         if (controller.isInitialized.value) {
           print("The controller is initialized: ${controller.initialized}");
           // Build the widget with the data from the controller
-          return MealsListView();
+          return PackageOptionsView();
         } else {
           // Show a loading indicator while waiting for the controller to initialize
           return CircularProgressIndicator();

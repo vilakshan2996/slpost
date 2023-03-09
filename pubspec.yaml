@@ -12,6 +12,7 @@ dependencies:
   font_awesome_flutter: ^10.4.0
   firebase_core:
   cloud_firestore: ^4.4.3
+  velocity_x: ^3.6.0
   flutter: 
     sdk: flutter
 

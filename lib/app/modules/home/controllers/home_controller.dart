@@ -6,6 +6,7 @@ class HomeController extends GetxController {
   //TODO: Implement HomeController
   var isInitialized = false.obs;
   
+  
   final count = 0.obs;
 
 
@@ -19,7 +20,7 @@ class HomeController extends GetxController {
 
   @override
   void onInit() async {
-    await FirebaseServices.getRate();
+    // await FirebaseServices.getRate();
     print("Firestore services is accepted before building the Home View");
     isInitialized.value = true;
     update();
