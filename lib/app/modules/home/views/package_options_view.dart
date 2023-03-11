@@ -1,17 +1,17 @@
+
+import 'package:country_picker/country_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:slpost/app/data/constants.dart';
 import 'package:slpost/app/data/models/parcel.dart';
+import 'package:slpost/app/modules/home/controllers/home_controller.dart';
+import 'package:slpost/app/modules/home/widgets/input_field.dart';
 import 'package:velocity_x/velocity_x.dart';
-
 
 class PackageOptionsView extends StatefulWidget {
   List<ParcelType> listOfMails;
-  PackageOptionsView(
-      {Key? key,required this.listOfMails})
-      : super(key: key);
-
-
+  PackageOptionsView({Key? key, required this.listOfMails}) : super(key: key);
 
   @override
   _PackageOptionsViewState createState() => _PackageOptionsViewState();
@@ -41,63 +41,90 @@ class _PackageOptionsViewState extends State<PackageOptionsView>
 
   @override
   Widget build(BuildContext context) {
-    
-    return  VStack(
-        [
-          HStack(
-            [
-              VxBox(
-            child: TextField(
-              keyboardType: TextInputType.number,
-            decoration: InputDecoration(
-              enabledBorder:OutlineInputBorder(
-                
-                borderRadius: BorderRadius.circular(15),
-                borderSide: BorderSide(color: Color(0xff6F72CA))),
-                
-             
-              contentPadding: EdgeInsets.all(10),
-              filled: true,
-              fillColor: Color.fromARGB(255, 247, 247, 247),
-              hintText: 'Enter the weight',
-              suffixText: "g",
-              
-              prefixIcon: Icon(Icons.line_weight)
+    final controller = Get.find<HomeController>();
+    controller.activeListOfParcels.value = widget.listOfMails;
+    return VStack(
+      [
+        HStack(
+          [
+            SizedBox(width: Get.width * 0.2, child: InputWidget()),
+            SizedBox(
+              width: 10,
             ),
-          ),
-          ).width(Get.width*0.15).make(),
+            GetX<HomeController>(builder: (controller) {
+              return ElevatedButton(
+                onPressed: () {
+                  showCountryPicker(
+                    context: context,
+                    //Optional.  Can be used to exclude(remove) one ore more country from the countries list (optional).
+                    favorite: <String>['US'],
+                    //Optional. Shows phone code before the country name.
+                    showPhoneCode: false,
+                    onSelect: (Country country) =>
+                        controller.selectCountry(country),
+                    // Optional. Sets the theme for the country list picker.
+                    countryListTheme: CountryListThemeData(
+                      // Optional. Sets the border radius for the bottomsheet.
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(40.0),
+                        topRight: Radius.circular(40.0),
+                      ),
+                      // Optional. Styles the search field.
+                      inputDecoration: InputDecoration(
+                        labelText: 'Search',
+                        hintText: 'Start typing to search',
+                        prefixIcon: const Icon(Icons.search),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: const Color(0xFF8C98A8).withOpacity(0.2),
+                          ),
+                        ),
+                      ),
+                      // Optional. Styles the text in the search field
+                      searchTextStyle: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 18,
+                      ),
+                    ),
+                  );
+                },
+                child: Text(controller.country.value.name.toString()),
+              );
+            }),
+          ],
+        ),
+        Expanded(
+          child: GridView.builder(
+              padding:
+                  const EdgeInsets.only(top: 0, bottom: 0, right: 16, left: 16),
+              itemCount: widget.listOfMails.length,
+              itemBuilder: (BuildContext context, int index) {
+                final int count = widget.listOfMails.length > 10
+                    ? 10
+                    : widget.listOfMails.length;
+                final Animation<double> animation =
+                    Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+                        parent: animationController!,
+                        curve: Interval((1 / count) * index, 1.0,
+                            curve: Curves.fastOutSlowIn)));
+                animationController?.forward();
 
-          //https://pub.dev/packages/circle_flags , use this to have a flag icon
-            ]
-          ),
-          
-          
-           Expanded(
-             child: GridView.builder(
-                      padding: const EdgeInsets.only(
-                          top: 0, bottom: 0, right: 16, left: 16),
-                      itemCount: widget.listOfMails.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final int count =
-                            widget.listOfMails.length > 10 ? 10 : widget.listOfMails.length;
-                        final Animation<double> animation =
-                            Tween<double>(begin: 0.0, end: 1.0).animate(
-                                CurvedAnimation(
-                                    parent: animationController!,
-                                    curve: Interval((1 / count) * index, 1.0,
-                                        curve: Curves.fastOutSlowIn)));
-                        animationController?.forward();
-               
-                        return PackageView(
-                          mealsListData: widget.listOfMails[index],
-                          animation: animation,
-                          animationController: animationController!,
-                        );
-                      }, gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3,mainAxisExtent:250)),
-           ),
-        ],
-    ) ;
-            }}
+                return PackageView(
+                  mealsListData: widget.listOfMails[index],
+                  animation: animation,
+                  animationController: animationController!,
+                );
+              },
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                mainAxisExtent: 250,
+              )),
+        )
+      ],
+      crossAlignment: CrossAxisAlignment.center,
+    );
+  }
+}
 
 class PackageView extends StatelessWidget {
   const PackageView(
@@ -119,7 +146,6 @@ class PackageView extends StatelessWidget {
             transform: Matrix4.translationValues(
                 100 * (1.0 - animation!.value), 0.0, 0.0),
             child: SizedBox(
-              
               child: Stack(
                 children: <Widget>[
                   Padding(
@@ -168,56 +194,36 @@ class PackageView extends StatelessWidget {
                               ),
                             ),
                             Expanded(
-                              child:VStack(
-                                [
-                                  // TODO: Add up your widgets
-                                  (mealsListData?.MaximumWeight!=null)?Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        "Maximum Weight : ${mealsListData?.MaximumWeight}kg",
-                                        style: TextStyle(
-                                          fontFamily: FitnessAppTheme.fontName,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 15,
-                                          letterSpacing: 0.2,
-                                          color: FitnessAppTheme.white,
-                                        ),
-                                      ),
-                                    ],
-                                  ):Container(),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      SelectableText(
-                                        "Non registered fee : Lkr ${mealsListData?.nonRegisteredFees}",
-                                        style: TextStyle(
-                                          fontFamily: FitnessAppTheme.fontName,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 15,
-                                          letterSpacing: 0.2,
-                                          color: FitnessAppTheme.white,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ]
-                            ,
-                              ).paddingOnly(top: 10)
-                             
-                            ),
-                             Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: <Widget>[
-                                      
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            right: 4, bottom: 3),
-                                        child: SelectableText(
-                                          'Lkr',
+                                child: VStack(
+                              [
+                                // TODO: Add up your widgets
+                                (mealsListData?.MaximumWeight != null)
+                                    ? Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          SelectableText(
+                                            "Maximum Weight : ${mealsListData?.MaximumWeight}kg",
+                                            style: TextStyle(
+                                              fontFamily:
+                                                  FitnessAppTheme.fontName,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 15,
+                                              letterSpacing: 0.2,
+                                              color: FitnessAppTheme.white,
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    : Container(),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Obx(() => SelectableText(
+                                          "Non registered fee : Lkr ${mealsListData?.nonRegisteredFees.value}",
                                           style: TextStyle(
                                             fontFamily:
                                                 FitnessAppTheme.fontName,
@@ -226,22 +232,42 @@ class PackageView extends StatelessWidget {
                                             letterSpacing: 0.2,
                                             color: FitnessAppTheme.white,
                                           ),
-                                        ),
+                                        )),
+                                  ],
+                                ),
+                              ],
+                            ).paddingOnly(top: 10)),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      right: 4, bottom: 3),
+                                  child: SelectableText(
+                                    'Lkr',
+                                    style: TextStyle(
+                                      fontFamily: FitnessAppTheme.fontName,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 15,
+                                      letterSpacing: 0.2,
+                                      color: FitnessAppTheme.white,
+                                    ),
+                                  ),
+                                ),
+                                Obx(() => SelectableText(
+                                      "${mealsListData?.fees.value}",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontFamily: FitnessAppTheme.fontName,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 30,
+                                        letterSpacing: 0.2,
+                                        color: FitnessAppTheme.white,
                                       ),
-                                      SelectableText(
-                                        "${mealsListData?.fees}",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontFamily: FitnessAppTheme.fontName,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 30,
-                                          letterSpacing: 0.2,
-                                          color: FitnessAppTheme.white,
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                
+                                    )),
+                              ],
+                            )
                           ],
                         ),
                       ),
@@ -277,8 +303,6 @@ class PackageView extends StatelessWidget {
     );
   }
 }
-
-
 
 class FitnessAppTheme {
   FitnessAppTheme._();
@@ -367,8 +391,3 @@ class FitnessAppTheme {
     color: lightText, // was lightText
   );
 }
-
-
-
-
-

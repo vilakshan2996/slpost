@@ -9,18 +9,23 @@ dependencies:
   cupertino_icons: ^1.0.2
   get: 4.6.5
   google_fonts: ^4.0.1
-  font_awesome_flutter: ^10.4.0
   firebase_core:
   cloud_firestore: ^4.4.3
   velocity_x: ^3.6.0
   flutter_svg:
+  country_picker:
+    git:
+      https://github.com/vilakshan2996/flutter_country_picker.git
+  
+      
+  
   flutter: 
-    sdk: flutter
+    sdk: flutter 
 
 dev_dependencies: 
   flutter_lints: 2.0.1
   flutter_test: 
-    sdk: flutter
+    sdk: flutter 
 
 flutter: 
   uses-material-design: true
