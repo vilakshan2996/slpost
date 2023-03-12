@@ -89,8 +89,8 @@ class HeroMenu extends StatelessWidget {
                   onExit: (event) => controller.changeHover(false,-1),
                   child: SideMenuItem(
                     press: () => controller.changeSelectedIndex(1), // change index on press
-                    title: "Sent",
-                    iconSrc: "assets/Icons/Send.svg",
+                    title: "SeaMail",
+                    iconSrc: "assets/Icons/Sea mail.svg",
                     isActive:
                         controller.selectedIndex == 1, // set isActive based on index
                         isHover:
@@ -101,22 +101,7 @@ class HeroMenu extends StatelessWidget {
 
                 } 
               ),
-              GetX<HomeController>(
-                builder: (controller) => MouseRegion(
-                  onHover: (event) => controller.changeHover(true,2),
-                  onExit: (event) => controller.changeHover(false,-1),
-                  
-                  child: SideMenuItem(
-                    press: () => controller.changeSelectedIndex(2), // change index on press
-                    title: "Drafts",
-                    iconSrc: "assets/Icons/File.svg",
-                    isActive:
-                        controller.selectedIndex == 2, // set isActive based on index
-                    isHover:
-                        controller.hoverIndex == 2,
-                  ),
-                ),
-              ),
+             
               
               
              
@@ -143,16 +128,13 @@ class HeroMainSection extends StatelessWidget {
             switch (controller.selectedIndex.value) {
               case 0:
                 return PackageOptionsView(
-                  listOfMails: Mails.seamails,
+                  listOfMails: Mails.airmails,
                 );
               case 1:
                 return PackageOptionsView(
                   listOfMails: Mails.seamails,
                 );
-              case 2:
-                return PackageOptionsView(
-                  listOfMails: Mails.seamails,
-                );
+             
               default:
                 return Container();
             }

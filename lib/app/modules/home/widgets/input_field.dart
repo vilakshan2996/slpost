@@ -32,7 +32,8 @@ class InputWidget extends StatelessWidget {
         },
         onEditingComplete: () {
            if (_formKey.currentState!.validate()) {
-            controller.calculateFees(int.parse(_textController.text));
+            controller.weight = int.parse(_textController.text);
+            controller.calculateFees();
 
 
               }
@@ -44,9 +45,20 @@ class InputWidget extends StatelessWidget {
           suffixText: "g",
           suffixIcon: Padding(
             padding: const EdgeInsets.all(kDefaultPadding * 0.75), //15
-            child: SvgPicture.asset(
-              "assets/Icons/Search.svg",
-              width: 24,
+            child: GestureDetector(
+              onTap: (){
+                  if (_formKey.currentState!.validate()) {
+            controller.weight = int.parse(_textController.text);
+            controller.calculateFees();
+
+
+              }
+
+              },
+              child: SvgPicture.asset(
+                "assets/Icons/Search.svg",
+                width: 24,
+              ),
             ),
           ),
           border: OutlineInputBorder(

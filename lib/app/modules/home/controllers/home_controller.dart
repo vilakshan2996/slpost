@@ -4,20 +4,46 @@ import 'package:slpost/app/data/models/parcel.dart';
 import 'package:slpost/app/data/services/firebase_services.dart';
 
 class HomeController extends GetxController {
+
+  List<String> shipmailAllowedCountries = ["AU","AT","BY","CA","CN","CZ","DK","FI","FR","DE","GB","GR","HK","IS","IN","IE","IL","IT","JP","KR","MY","MV","MM","NL","NZ","NO","PH","PL","RU","SG","ZA","ES","SE","CH","TH","AE","UA","US"];
+  
+
+
+
   //TODO: Implement HomeController
 
   var selectedIndex = 0.obs;
   var isHover = false.obs;
+  int weight = 0;
+  var isAvailabe = true.obs;
   var hoverIndex = (-1).obs; // observable variable
 
 
-  var country = Country(phoneCode: "+1", countryCode: "+1", e164Sc: 0, geographic: true, level: 1, name: "United States", example: "2012345678", displayName: "United States (US) [+1]", displayNameNoCountryCode:"United States (US)", e164Key: "1-US-0",group: "A").obs;
+  var country = Country(phoneCode: "+1", countryCode: "+1", e164Sc: 0, geographic: true, level: 1, name: "United States", example: "2012345678", displayName: "United States (US) [+1]", displayNameNoCountryCode:"United States (US)", e164Key: "1-US-0",group: "H").obs;
   var activeListOfParcels = [].obs;
 
 
   void selectCountry(Country country) {
 
     this.country.value = country;
+    if(selectedIndex.value ==0){
+      if(shipmailAllowedCountries.contains(country.countryCode)){
+        isAvailabe.value = true;
+        calculateFees();
+      }else{
+        isAvailabe.value = false;
+      }
+    }else if(selectedIndex.value ==1){
+      if(country.groupName == ""){
+        isAvailabe.value = false;
+      }else{
+        isAvailabe.value= true;
+        calculateFees();
+      }
+    }
+    
+
+    
   }
 
   void changeSelectedIndex(int index) {
@@ -30,9 +56,9 @@ class HomeController extends GetxController {
   }
 
 
-  void calculateFees(int w){
+  void calculateFees(){
     for (ParcelType parcel in activeListOfParcels) {
-      parcel.findFees(w);
+      parcel.findFees(weight,country.value);
     }
     
 

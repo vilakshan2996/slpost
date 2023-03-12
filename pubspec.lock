@@ -94,7 +94,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "5c915e7883e98b272a5944129532bbd690bb5909"
+      resolved-ref: fd23cf522d01a7cf29bf3d0b8beec496425b69e4
       url: "https://github.com/vilakshan2996/flutter_country_picker.git"
     source: git
     version: "2.0.20"

@@ -1,3 +1,4 @@
+import 'dart:ui';
 
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -60,8 +61,12 @@ class _PackageOptionsViewState extends State<PackageOptionsView>
                     favorite: <String>['US'],
                     //Optional. Shows phone code before the country name.
                     showPhoneCode: false,
-                    onSelect: (Country country) =>
-                        controller.selectCountry(country),
+                    onSelect: (Country country) {
+                      controller.selectCountry(country);
+                      
+
+                    },
+                        
                     // Optional. Sets the theme for the country list picker.
                     countryListTheme: CountryListThemeData(
                       // Optional. Sets the border radius for the bottomsheet.
@@ -127,7 +132,8 @@ class _PackageOptionsViewState extends State<PackageOptionsView>
 }
 
 class PackageView extends StatelessWidget {
-  const PackageView(
+  final controller = Get.find<HomeController>();
+  PackageView(
       {Key? key, this.mealsListData, this.animationController, this.animation})
       : super(key: key);
 
@@ -293,7 +299,37 @@ class PackageView extends StatelessWidget {
                       height: 100,
                       child: Image.asset(mealsListData!.imagePath),
                     ),
-                  )
+                  ),
+
+                   Obx(() =>  (mealsListData!.isWeightExceeded.value) ?ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                          child: Container(
+                            child:
+                                "Maximum Weight Allowed is ${mealsListData!.MaximumWeight}".text.makeCentered(),
+                          ),
+                        ),
+                      ):Container()
+                      
+                      ),
+
+                  Obx(() =>  (!controller.isAvailabe.value) ?ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                          child: Container(
+                            child:
+                                "Service Is Not Available".text.makeCentered(),
+                          ),
+                        ),
+                      ):Container()
+                      
+                      ),
+                     
+                  
+                      
+                      
                 ],
               ),
             ),
