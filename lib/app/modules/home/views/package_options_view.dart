@@ -1,10 +1,8 @@
 import 'dart:ui';
 
 import 'package:country_picker/country_picker.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:slpost/app/data/constants.dart';
 import 'package:slpost/app/data/models/parcel.dart';
 import 'package:slpost/app/modules/home/controllers/home_controller.dart';
 import 'package:slpost/app/modules/home/widgets/input_field.dart';

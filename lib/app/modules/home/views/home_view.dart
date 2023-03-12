@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get.dart';
 import 'package:slpost/app/data/constants.dart';
 import 'package:slpost/app/data/models/parcel.dart';
-import 'package:slpost/app/data/services/firebase_services.dart';
 import 'package:slpost/app/modules/home/views/package_options_view.dart';
 import 'package:slpost/app/modules/home/widgets/sidemenu_item.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -41,17 +39,10 @@ class HeroMenu extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
           child: Column(
             children: [
-              Row(
-                children: [
-                  Image.asset(
-                    "assets/fitness_app/letter.png",
-                    width: 46,
+                Image.asset(
+                    "assets/images/logo.png",
+
                   ),
-                  Spacer(),
-                  // We don't want to show this close button on Desktop mood
-                  // if (!Responsive.isDesktop(context)) CloseButton(),
-                ],
-              ),
              
               
 

@@ -9,8 +9,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   get: 4.6.5
   google_fonts: ^4.0.1
-  firebase_core:
-  cloud_firestore: ^4.4.3
   velocity_x: ^3.6.0
   flutter_svg:
   country_picker:
@@ -21,6 +19,7 @@ dependencies:
   
   flutter: 
     sdk: flutter 
+  meta_seo: ^2.0.3
 
 dev_dependencies: 
   flutter_lints: 2.0.1
@@ -30,6 +29,6 @@ dev_dependencies:
 flutter: 
   uses-material-design: true
   assets:
-      - assets/fitness_app/
+      - assets/images/
       - assets/icons/
 

@@ -292,17 +292,17 @@ class SeaMailPM extends ParcelType{
 
 class Mails{
   static List<ParcelType> seamails = [
-    SeaMailLetter(title: "Letter", startColor: 0xff6F72CA, endColor: 0xff1E1466, imagePath:"assets/fitness_app/letter.png", MaximumWeight: 2),
-     SeaMailSP(title: "Small Packets", startColor: 0xffFA7D82, endColor: 0xffFFB295, imagePath:"assets/fitness_app/upacket.png", MaximumWeight: 2),
-    SeaMailPM(title: "Printed Matter, Books", startColor: 0xff738AE6, endColor: 0xff5C5EDD, imagePath:"assets/fitness_app/books.png", MaximumWeight: 2),
+    SeaMailLetter(title: "Letter", startColor: 0xff6F72CA, endColor: 0xff1E1466, imagePath:"assets/images/letter.png", MaximumWeight: 2),
+     SeaMailSP(title: "Small Packets", startColor: 0xffFA7D82, endColor: 0xffFFB295, imagePath:"assets/images/upacket.png", MaximumWeight: 2),
+    SeaMailPM(title: "Printed Matter, Books", startColor: 0xff738AE6, endColor: 0xff5C5EDD, imagePath:"assets/images/books.png", MaximumWeight: 2),
 
   ];
 
   static List<ParcelType> airmails = [
-    AirMailLetter(title: "Letter", startColor:0xff6F72CA, endColor: 0xff1E1466, imagePath:"assets/fitness_app/letter.png",MaximumWeight:2),
-    AirUpacket(title: "U Packet", startColor: 0xffFA7D82, endColor: 0xffFFB295, imagePath: "assets/fitness_app/upacket.png", MaximumWeight: 2),
-    AirPrintedMatter(title: "Printed Matters", startColor: 0xff738AE6, endColor:  0xff5C5EDD, imagePath: "assets/fitness_app/books.png", MaximumWeight: 2),
-    PostCard(title: "Post Card", startColor: 0xffA6E3E9, endColor: 0xff0E6BA8, imagePath: "assets/fitness_app/postcard.png")
+    AirMailLetter(title: "Letter", startColor:0xff6F72CA, endColor: 0xff1E1466, imagePath:"assets/images/letter.png",MaximumWeight:2),
+    AirUpacket(title: "U Packet", startColor: 0xffFA7D82, endColor: 0xffFFB295, imagePath: "assets/images/upacket.png", MaximumWeight: 2),
+    AirPrintedMatter(title: "Printed Matters", startColor: 0xff738AE6, endColor:  0xff5C5EDD, imagePath: "assets/images/books.png", MaximumWeight: 2),
+    PostCard(title: "Post Card", startColor: 0xffA6E3E9, endColor: 0xff0E6BA8, imagePath: "assets/images/postcard.png")
 
   ];
 

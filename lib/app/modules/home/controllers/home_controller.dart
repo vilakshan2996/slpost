@@ -1,7 +1,6 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:get/get.dart';
 import 'package:slpost/app/data/models/parcel.dart';
-import 'package:slpost/app/data/services/firebase_services.dart';
 
 class HomeController extends GetxController {
 
