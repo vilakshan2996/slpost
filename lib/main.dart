@@ -29,9 +29,9 @@ void main() async{
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-  static FirebaseAnalyticsObserver observer =
-      FirebaseAnalyticsObserver(analytics: analytics);
+  // static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  // static FirebaseAnalyticsObserver observer =
+  //     FirebaseAnalyticsObserver(analytics: analytics);
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Srilankan Postal Rate',
-        navigatorObservers: <NavigatorObserver>[observer],
+        // navigatorObservers: <NavigatorObserver>[observer],
          initialRoute: AppPages.INITIAL,
         getPages: AppPages.routes,
         

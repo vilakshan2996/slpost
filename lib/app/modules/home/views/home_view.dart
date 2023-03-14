@@ -2,6 +2,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:slpost/app/data/constants.dart';
 import 'package:slpost/app/data/models/parcel.dart';
@@ -13,9 +14,7 @@ import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
 
-  static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-  static FirebaseAnalyticsObserver observer =
-      FirebaseAnalyticsObserver(analytics: analytics);
+ 
       
   HomeView({Key? key}) : super(key: key);
 
@@ -132,23 +131,35 @@ class HeroMainSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return VxBox(
-      child: GetX<HomeController>(
-        builder: (controller) {
-          switch (controller.selectedIndex.value) {
-            case 0:
-              return PackageOptionsView(
-                listOfMails: Mails.airmails,
-              );
-            case 1:
-              return PackageOptionsView(
-                listOfMails: Mails.seamails,
-              );
+      child: VStack(
+         [
+          Expanded(
+            child: VxBox(
+              child: GetX<HomeController>(
+                builder: (controller) {
+                  switch (controller.selectedIndex.value) {
+                    case 0:
+                      return PackageOptionsView(
+                        listOfMails: Mails.airmails,
+                      );
+                    case 1:
+                      return PackageOptionsView(
+                        listOfMails: Mails.seamails,
+                      );
+          
+                    default:
+                      return Container();
+                  }
+                },
+              ),
+            ).make()
+          ),
 
-            default:
-              return Container();
-          }
-        },
+          ("Don't miss out on our latest updates! Stay tuned and be the first to know about our upcoming releases").text.xl2.makeCentered()
+        ],
+     
+       crossAlignment: CrossAxisAlignment.center,
       ),
-    ).px12.color(kBgDarkColor).make();
+    ).p12.color(kBgDarkColor).make();
   }
 }
