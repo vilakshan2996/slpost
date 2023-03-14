@@ -1,21 +1,49 @@
 
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+import 'package:seo_renderer/helpers/renderer_state.dart';
+import 'package:seo_renderer/helpers/robot_detector_vm.dart';
 
 
 import 'app/routes/app_pages.dart';
+import 'firebase_options.dart';
 
 void main() async{
-  GoogleFonts.config.allowRuntimeFetching = false;
- 
+   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  usePathUrlStrategy();
+  
   
   runApp(
-    GetMaterialApp(
-      title: "Application",
-      initialRoute: AppPages.INITIAL,
-      getPages: AppPages.routes,
-    ),
+   MyApp()
   );
+}
+
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  // static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  // static FirebaseAnalyticsObserver observer =
+  //     FirebaseAnalyticsObserver(analytics: analytics);
+
+  @override
+  Widget build(BuildContext context) {
+    return RobotDetector(
+      child: GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Srilankan Postal Rate',
+        // navigatorObservers: <NavigatorObserver>[observer],
+         initialRoute: AppPages.INITIAL,
+        getPages: AppPages.routes,
+        
+      ),
+    );
+  }
 }

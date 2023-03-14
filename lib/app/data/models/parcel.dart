@@ -2,12 +2,11 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:slpost/app/modules/home/controllers/home_controller.dart';
 
 
  class ParcelType {
   Rx<int> fees =0.obs;
-  Rx<int> nonRegisteredFees=0.obs;
+  Rxn<int> nonRegisteredFees=Rxn<int>();
   int startColor,endColor;
   String title;
   String imagePath;
@@ -281,9 +280,8 @@ class SeaMailPM extends ParcelType{
 
   @override
   void findFees(int weight, Country c) {
-   
-    nonRegisteredFees.value = 70;
-    fees.value = 870+70;
+    print(".............findFees() PostCard Method called.............");
+    fees.value = 70;
   }
     
   }

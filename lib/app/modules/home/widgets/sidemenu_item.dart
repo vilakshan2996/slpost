@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:seo_renderer/renderers/text_renderer/text_renderer_vm.dart';
 import 'package:slpost/app/data/constants.dart';
 
 class SideMenuItem extends StatelessWidget {
@@ -51,13 +52,15 @@ class SideMenuItem extends StatelessWidget {
                       color: (isActive || isHover) ? kPrimaryColor : kGrayColor,
                     ),
                     SizedBox(width: kDefaultPadding * 0.75),
-                    Text(
-                      title,
-
-                      style: TextStyle(
-                        color: (isActive || isHover) ? kTextColor : kGrayColor,
+                    TextRenderer(
+                      child: Text(
+                        title,
+                    
+                        style: TextStyle(
+                          color: (isActive || isHover) ? kTextColor : kGrayColor,
+                        ),
+                        
                       ),
-                      
                     ),
                     
                   ],

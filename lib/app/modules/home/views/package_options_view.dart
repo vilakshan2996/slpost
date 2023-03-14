@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:seo_renderer/renderers/text_renderer/text_renderer_vm.dart';
 import 'package:slpost/app/data/models/parcel.dart';
 import 'package:slpost/app/modules/home/controllers/home_controller.dart';
 import 'package:slpost/app/modules/home/widgets/input_field.dart';
@@ -208,8 +209,33 @@ class PackageView extends StatelessWidget {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: <Widget>[
-                                          SelectableText(
-                                            "Maximum Weight : ${mealsListData?.MaximumWeight}kg",
+                                          TextRenderer(
+                                            child: SelectableText(
+                                              "Maximum Weight : ${mealsListData?.MaximumWeight}kg",
+                                              style: TextStyle(
+                                                fontFamily:
+                                                    FitnessAppTheme.fontName,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 15,
+                                                letterSpacing: 0.2,
+                                                color: FitnessAppTheme.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    : Container(),
+                               Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Obx(() {
+                                      
+                                    print("Find value method triggered by ${mealsListData!.title}");
+                                    print(mealsListData?.nonRegisteredFees.value);
+                                      return ( (mealsListData!.nonRegisteredFees.value !=null )?TextRenderer(
+                                      child: SelectableText(
+                                            "Non registered fee : Lkr ${mealsListData?.nonRegisteredFees.value}",
                                             style: TextStyle(
                                               fontFamily:
                                                   FitnessAppTheme.fontName,
@@ -219,24 +245,7 @@ class PackageView extends StatelessWidget {
                                               color: FitnessAppTheme.white,
                                             ),
                                           ),
-                                        ],
-                                      )
-                                    : Container(),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Obx(() => SelectableText(
-                                          "Non registered fee : Lkr ${mealsListData?.nonRegisteredFees.value}",
-                                          style: TextStyle(
-                                            fontFamily:
-                                                FitnessAppTheme.fontName,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 15,
-                                            letterSpacing: 0.2,
-                                            color: FitnessAppTheme.white,
-                                          ),
-                                        )),
+                                    ):Container());}),
                                   ],
                                 ),
                               ],
@@ -248,28 +257,35 @@ class PackageView extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.only(
                                       right: 4, bottom: 3),
-                                  child: SelectableText(
-                                    'Lkr',
-                                    style: TextStyle(
-                                      fontFamily: FitnessAppTheme.fontName,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 15,
-                                      letterSpacing: 0.2,
-                                      color: FitnessAppTheme.white,
-                                    ),
-                                  ),
-                                ),
-                                Obx(() => SelectableText(
-                                      "${mealsListData?.fees.value}",
-                                      textAlign: TextAlign.center,
+                                  child: TextRenderer(
+                                    child: SelectableText(
+                                      'Lkr',
                                       style: TextStyle(
                                         fontFamily: FitnessAppTheme.fontName,
                                         fontWeight: FontWeight.w500,
-                                        fontSize: 30,
+                                        fontSize: 15,
                                         letterSpacing: 0.2,
                                         color: FitnessAppTheme.white,
                                       ),
-                                    )),
+                                    ),
+                                  ),
+                                ),
+                                Obx(()  {
+                                  
+                                  print(mealsListData!.fees.value);
+                                  return TextRenderer(
+                                  child: SelectableText(
+                                        "${mealsListData?.fees.value}",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontFamily: FitnessAppTheme.fontName,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 30,
+                                          letterSpacing: 0.2,
+                                          color: FitnessAppTheme.white,
+                                        ),
+                                      ),
+                                );}),
                               ],
                             )
                           ],
@@ -305,7 +321,7 @@ class PackageView extends StatelessWidget {
                           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                           child: Container(
                             child:
-                                "Maximum Weight Allowed is ${mealsListData!.MaximumWeight}".text.makeCentered(),
+                                TextRenderer(child: "Maximum Weight Allowed is ${mealsListData!.MaximumWeight}kg".text.makeCentered()),
                           ),
                         ),
                       ):Container()
@@ -318,7 +334,7 @@ class PackageView extends StatelessWidget {
                           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                           child: Container(
                             child:
-                                "Service Is Not Available".text.makeCentered(),
+                                TextRenderer(child: "Service Is Not Available".text.makeCentered()),
                           ),
                         ),
                       ):Container()

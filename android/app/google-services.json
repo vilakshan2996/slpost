@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "886891249964",
+    "project_id": "slpost-f8ac9",
+    "storage_bucket": "slpost-f8ac9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:886891249964:android:2331b999cb96fce4d6ac89",
+        "android_client_info": {
+          "package_name": "lk.emtechmart.slpost"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "886891249964-utlf5t36ldmgl6cu0pncf980eb6br54g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANJVtR4KCONWZ2rIvUwYS8v7CQOhniZ-s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "886891249964-utlf5t36ldmgl6cu0pncf980eb6br54g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
