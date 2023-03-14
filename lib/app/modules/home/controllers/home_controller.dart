@@ -5,10 +5,6 @@ import 'package:slpost/app/data/models/parcel.dart';
 class HomeController extends GetxController {
 
   List<String> shipmailAllowedCountries = ["AU","AT","BY","CA","CN","CZ","DK","FI","FR","DE","GB","GR","HK","IS","IN","IE","IL","IT","JP","KR","MY","MV","MM","NL","NZ","NO","PH","PL","RU","SG","ZA","ES","SE","CH","TH","AE","UA","US"];
-  
-
-
-
   //TODO: Implement HomeController
 
   var selectedIndex = 0.obs;
@@ -19,25 +15,25 @@ class HomeController extends GetxController {
 
 
   var country = Country(phoneCode: "+1", countryCode: "+1", e164Sc: 0, geographic: true, level: 1, name: "United States", example: "2012345678", displayName: "United States (US) [+1]", displayNameNoCountryCode:"United States (US)", e164Key: "1-US-0",group: "H").obs;
-  var activeListOfParcels = [].obs;
+  List<Rx<ParcelType>> activeListOfParcels = [];
 
 
   void selectCountry(Country country) {
 
     this.country.value = country;
     if(selectedIndex.value ==0){
-      if(shipmailAllowedCountries.contains(country.countryCode)){
-        isAvailabe.value = true;
-        calculateFees();
-      }else{
-        isAvailabe.value = false;
-      }
-    }else if(selectedIndex.value ==1){
       if(country.groupName == ""){
         isAvailabe.value = false;
       }else{
         isAvailabe.value= true;
         calculateFees();
+      }
+    } else if(selectedIndex.value ==1){
+      if(shipmailAllowedCountries.contains(country.countryCode)){
+        isAvailabe.value = true;
+        calculateFees();
+      }else{
+        isAvailabe.value = false;
       }
     }
     
@@ -56,8 +52,11 @@ class HomeController extends GetxController {
 
 
   void calculateFees(){
-    for (ParcelType parcel in activeListOfParcels) {
-      parcel.findFees(weight,country.value);
+    for (Rx<ParcelType> parcel in activeListOfParcels) {
+      parcel.update((val) {
+        parcel.value.findFees(weight, country.value);
+       });
+      
     }
     
 

@@ -10,7 +10,7 @@ import 'package:slpost/app/modules/home/widgets/input_field.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class PackageOptionsView extends StatefulWidget {
-  List<ParcelType> listOfMails;
+  List<Rx<ParcelType>> listOfMails;
   PackageOptionsView({Key? key, required this.listOfMails}) : super(key: key);
 
   @override
@@ -42,7 +42,7 @@ class _PackageOptionsViewState extends State<PackageOptionsView>
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<HomeController>();
-    controller.activeListOfParcels.value = widget.listOfMails;
+    controller.activeListOfParcels = widget.listOfMails;
     return VStack(
       [
         HStack(
@@ -114,7 +114,7 @@ class _PackageOptionsViewState extends State<PackageOptionsView>
                 animationController?.forward();
 
                 return PackageView(
-                  mealsListData: widget.listOfMails[index],
+                  packageData: widget.listOfMails[index],
                   animation: animation,
                   animationController: animationController!,
                 );
@@ -133,10 +133,10 @@ class _PackageOptionsViewState extends State<PackageOptionsView>
 class PackageView extends StatelessWidget {
   final controller = Get.find<HomeController>();
   PackageView(
-      {Key? key, this.mealsListData, this.animationController, this.animation})
+      {Key? key, required this.packageData, this.animationController, this.animation})
       : super(key: key);
 
-  final ParcelType? mealsListData;
+  final Rx<ParcelType> packageData;
   final AnimationController? animationController;
   final Animation<double>? animation;
 
@@ -160,15 +160,15 @@ class PackageView extends StatelessWidget {
                       decoration: BoxDecoration(
                         boxShadow: <BoxShadow>[
                           BoxShadow(
-                              color: Color(mealsListData!.endColor)
+                              color: Color(packageData.value.endColor)
                                   .withOpacity(0.6),
                               offset: const Offset(1.1, 4.0),
                               blurRadius: 8.0),
                         ],
                         gradient: LinearGradient(
                           colors: <Color>[
-                            Color(mealsListData!.startColor),
-                            Color(mealsListData!.endColor),
+                            Color(packageData.value.startColor),
+                            Color(packageData.value.endColor),
                           ],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
@@ -188,7 +188,7 @@ class PackageView extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             SelectableText(
-                              mealsListData!.title,
+                              packageData.value.title,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontFamily: FitnessAppTheme.fontName,
@@ -202,7 +202,7 @@ class PackageView extends StatelessWidget {
                                 child: VStack(
                               [
                                 // TODO: Add up your widgets
-                                (mealsListData?.MaximumWeight != null)
+                                (packageData.value.maximumWeight != null)
                                     ? Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
@@ -211,7 +211,7 @@ class PackageView extends StatelessWidget {
                                         children: <Widget>[
                                           TextRenderer(
                                             child: SelectableText(
-                                              "Maximum Weight : ${mealsListData?.MaximumWeight}kg",
+                                              "Maximum Weight : ${packageData.value.maximumWeight}kg",
                                               style: TextStyle(
                                                 fontFamily:
                                                     FitnessAppTheme.fontName,
@@ -231,11 +231,11 @@ class PackageView extends StatelessWidget {
                                   children: <Widget>[
                                     Obx(() {
                                       
-                                    print("Find value method triggered by ${mealsListData!.title}");
-                                    print(mealsListData?.nonRegisteredFees.value);
-                                      return ( (mealsListData!.nonRegisteredFees.value !=null )?TextRenderer(
+                                    print("Find value method triggered by ${packageData.value.title}");
+                                    print(packageData.value.nonRegisteredFees);
+                                      return ( (packageData.value.nonRegisteredFees !=null )?TextRenderer(
                                       child: SelectableText(
-                                            "Non registered fee : Lkr ${mealsListData?.nonRegisteredFees.value}",
+                                            "Non registered fee : Lkr ${packageData.value.nonRegisteredFees}",
                                             style: TextStyle(
                                               fontFamily:
                                                   FitnessAppTheme.fontName,
@@ -272,10 +272,10 @@ class PackageView extends StatelessWidget {
                                 ),
                                 Obx(()  {
                                   
-                                  print(mealsListData!.fees.value);
+                                  print(packageData.value.fees);
                                   return TextRenderer(
                                   child: SelectableText(
-                                        "${mealsListData?.fees.value}",
+                                        "${packageData.value.fees}",
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontFamily: FitnessAppTheme.fontName,
@@ -311,17 +311,17 @@ class PackageView extends StatelessWidget {
                     child: SizedBox(
                       width: 100,
                       height: 100,
-                      child: Image.asset(mealsListData!.imagePath),
+                      child: Image.asset(packageData.value.imagePath),
                     ),
                   ),
 
-                   Obx(() =>  (mealsListData!.isWeightExceeded.value) ?ClipRRect(
+                   Obx(() =>  (packageData.value.isWeightExceeded) ?ClipRRect(
                         borderRadius: BorderRadius.circular(20),
                         child: BackdropFilter(
                           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                           child: Container(
                             child:
-                                TextRenderer(child: "Maximum Weight Allowed is ${mealsListData!.MaximumWeight}kg".text.makeCentered()),
+                                TextRenderer(child: "Maximum Weight Allowed is ${packageData.value.maximumWeight}kg".text.makeCentered()),
                           ),
                         ),
                       ):Container()
