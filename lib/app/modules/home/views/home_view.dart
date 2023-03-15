@@ -1,165 +1,198 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:sidebarx/sidebarx.dart';
 import 'package:slpost/app/data/constants.dart';
 import 'package:slpost/app/data/models/parcel.dart';
-import 'package:slpost/app/modules/home/views/package_options_view.dart';
-import 'package:slpost/app/modules/home/widgets/sidemenu_item.dart';
+import 'package:slpost/app/modules/package/views/package_view.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../controllers/home_controller.dart';
 
-class HomeView extends GetView<HomeController> {
+const primaryColor = Color(0xFF685BFF);
+const canvasColor = Color(0xFF2E2E48);
+const scaffoldBackgroundColor = Color(0xFF464667);
+const accentCanvasColor = Color(0xFF3E3E61);
+const white = Colors.white;
+final actionColor = const Color(0xFF5F5FA7).withOpacity(0.6);
+final divider = Divider(color: white.withOpacity(0.3), height: 1);
 
- 
-      
+class HomeView extends GetResponsiveView {
+  final HomeController controller = Get.find<HomeController>();
   HomeView({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Scaffold(
-      body: SafeArea(child: ResponsiveHomeScreen()),
-    );
-  }
-}
-
-class ResponsiveHomeScreen extends GetResponsiveView {
-  ResponsiveHomeScreen({super.key});
-
+  final _key = GlobalKey<ScaffoldState>();
   @override
   Widget? phone() {
-    // TODO: implement phone
-    return VxBox(
-        child: VStack(
-      [
-        Lottie.network(
-            "https://assets9.lottiefiles.com/private_files/lf30_hlbuygvk.json"),
-            ("Desktop only for now. Mobile version coming soon!").text.xl2.center.make()
-      ],
-    )).p12.make();
+    return Scaffold(
+      key: _key,
+      appBar: AppBar(
+        backgroundColor: canvasColor,
+        title: Obx(() => Text(controller.title.value)),
+        leading: IconButton(
+          onPressed: () {
+            // if (!Platform.isAndroid && !Platform.isIOS) {
+            //   _controller.setExtended(true);
+            // }
+            _key.currentState?.openDrawer();
+          },
+          icon: const Icon(Icons.menu),
+        ),
+      ),
+      drawer: ExampleSidebarX(controller: controller.sidebarXController),
+      body: Row(
+        children: [
+          Expanded(
+            child: Center(
+              child: _ScreensExample(
+                controller: controller.sidebarXController,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
   Widget? desktop() {
-    // TODO: implement desktop
-    return Row(
-      children: [
-        Expanded(flex: 1, child: HeroMenu()),
-        Expanded(flex: 3, child: HeroMainSection())
-      ],
+    return Scaffold(
+      key: _key,
+      body: Row(
+        children: [
+          ExampleSidebarX(controller: controller.sidebarXController),
+          Expanded(
+            child: Center(
+              child: _ScreensExample(
+                controller: controller.sidebarXController,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
   
 }
 
-class HeroMenu extends StatelessWidget {
-  const HeroMenu({super.key});
+class ExampleSidebarX extends StatelessWidget {
+  const ExampleSidebarX({
+    Key? key,
+    required SidebarXController controller,
+  })  : _controller = controller,
+        super(key: key);
+
+  final SidebarXController _controller;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: double.infinity,
-      padding: EdgeInsets.only(top: kDefaultPadding),
-      color: kBgLightColor,
-      child: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
-          child: Column(
-            children: [
-              Image.asset(
-                "assets/images/logo.png",
-              ),
-
-              SizedBox(height: kDefaultPadding * 2),
-              // Menu Items
-              GetX<HomeController>(
-                builder: (controller) => MouseRegion(
-                  onHover: (event) => controller.changeHover(true, 0),
-                  onExit: (event) => controller.changeHover(false, -1),
-                  child: SideMenuItem(
-                    press: () {
-                      controller.changeSelectedIndex(0);
-                    }, // change index on press
-                    title: "AirMail",
-                    iconSrc: "assets/Icons/Air mail.svg",
-                    isActive: controller.selectedIndex ==
-                        0, // set isActive based on index
-                    isHover: controller.hoverIndex.value == 0,
-                  ),
-                ),
-              ),
-              GetX<HomeController>(builder: (controller) {
-                print("Hovered");
-                print(controller.isHover);
-                print(controller.hoverIndex);
-                return MouseRegion(
-                  onHover: (event) {
-                    controller.changeHover(true, 1);
-                  },
-                  onExit: (event) => controller.changeHover(false, -1),
-                  child: SideMenuItem(
-                    press: () => controller
-                        .changeSelectedIndex(1), // change index on press
-                    title: "SeaMail",
-                    iconSrc: "assets/Icons/Sea mail.svg",
-                    isActive: controller.selectedIndex ==
-                        1, // set isActive based on index
-                    isHover: controller.hoverIndex.value == 1,
-                  ),
-                );
-              }),
-
-              SizedBox(height: kDefaultPadding * 2),
-              // Tags
-              // Tags(),
-            ],
+    return SidebarX(
+      controller: _controller,
+      theme: SidebarXTheme(
+        margin: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: canvasColor,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        hoverColor: scaffoldBackgroundColor,
+        textStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
+        selectedTextStyle: const TextStyle(color: Colors.white),
+        itemTextPadding: const EdgeInsets.only(left: 30),
+        selectedItemTextPadding: const EdgeInsets.only(left: 30),
+        itemDecoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: canvasColor),
+        ),
+        selectedItemDecoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: actionColor.withOpacity(0.37),
           ),
+          gradient: const LinearGradient(
+            colors: [accentCanvasColor, canvasColor],
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.28),
+              blurRadius: 30,
+            )
+          ],
+        ),
+        iconTheme: IconThemeData(
+          color: Colors.white.withOpacity(0.7),
+          size: 20,
+        ),
+        selectedIconTheme: const IconThemeData(
+          color: Colors.white,
+          size: 20,
         ),
       ),
+      extendedTheme: const SidebarXTheme(
+        width: 200,
+        decoration: BoxDecoration(
+          color: canvasColor,
+        ),
+      ),
+      footerDivider: divider,
+      headerBuilder: (context, extended) {
+        return SizedBox(
+          height: 150,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset('assets/images/logo.png'),
+          ),
+        );
+      },
+      items: [
+        SidebarXItem(
+          icon: FontAwesomeIcons.planeDeparture,
+          label: 'Air Mail',
+          onTap: () {
+            debugPrint('AirMail');
+          },
+        ),
+        const SidebarXItem(
+          icon: FontAwesomeIcons.ship,
+          label: 'Sea Mail',
+        ),
+        
+      ],
     );
   }
 }
 
-class HeroMainSection extends StatelessWidget {
-  const HeroMainSection({super.key});
+class _ScreensExample extends StatelessWidget {
+  const _ScreensExample({
+    Key? key,
+    required this.controller,
+  }) : super(key: key);
+
+  final SidebarXController controller;
 
   @override
   Widget build(BuildContext context) {
-    return VxBox(
-      child: VStack(
-         [
-          Expanded(
-            child: VxBox(
-              child: GetX<HomeController>(
-                builder: (controller) {
-                  switch (controller.selectedIndex.value) {
-                    case 0:
-                      return PackageOptionsView(
-                        listOfMails: Mails.airmails,
-                      );
-                    case 1:
-                      return PackageOptionsView(
-                        listOfMails: Mails.seamails,
-                      );
-          
-                    default:
-                      return Container();
-                  }
-                },
-              ),
-            ).make()
-          ),
-
-          ("Don't miss out on our latest updates! Stay tuned and be the first to know about our upcoming releases").text.xl2.makeCentered()
-        ],
-     
-       crossAlignment: CrossAxisAlignment.center,
-      ),
-    ).p12.color(kBgDarkColor).make();
+    final theme = Theme.of(context);
+    return AnimatedBuilder(
+      animation: controller,
+      builder: (context, child) {
+        switch (controller.selectedIndex) {
+          case 0:
+            return PackageView(
+              listOfMails: Mails.airmails,
+            );
+          case 1:
+            return PackageView(
+              listOfMails: Mails.seamails,
+            );
+          default:
+            return Container();
+        }
+      },
+    );
   }
 }

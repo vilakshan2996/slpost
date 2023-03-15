@@ -2,20 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:slpost/app/data/constants.dart';
-import 'package:slpost/app/modules/home/controllers/home_controller.dart';
+import 'package:slpost/app/modules/package/controllers/package_controller.dart';
 
 class InputWidget extends StatelessWidget {
-  const InputWidget({super.key});
 
+  static final GlobalKey<FormState> _key = GlobalKey<FormState>();
+  InputWidget({super.key});
+  final PackageController controller = Get.find<PackageController>();
+final _textController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<HomeController>();
-    final _formKey = GlobalKey<FormState>();
-    final _textController = TextEditingController();
+    
+  
+    
 
     return Form(
-      key: _formKey,
+      key: _key,
       child: TextFormField(
+         keyboardType: TextInputType.number,
         controller: _textController,
         validator: (value) {
           // Check if value is null or empty
@@ -30,24 +34,26 @@ class InputWidget extends StatelessWidget {
           // No error
           return null;
         },
-        onEditingComplete: () {
-           if (_formKey.currentState!.validate()) {
-            controller.weight = int.parse(_textController.text);
+
+        
+        onFieldSubmitted: (value) {
+            if (_key.currentState!.validate()) {
+            controller.weight = int.parse(value);
             controller.calculateFees();
-
-
               }
+
         },
+       
         decoration: InputDecoration(
           hintText: "Enter Weight in gram",
           fillColor: kBgLightColor,
           filled: true,
           suffixText: "g",
           suffixIcon: Padding(
-            padding: const EdgeInsets.all(kDefaultPadding * 0.75), //15
+            padding:  EdgeInsets.all(kDefaultPadding * 0.75), //15
             child: GestureDetector(
               onTap: (){
-                  if (_formKey.currentState!.validate()) {
+                  if (_key.currentState!.validate()) {
             controller.weight = int.parse(_textController.text);
             controller.calculateFees();
 
@@ -55,10 +61,7 @@ class InputWidget extends StatelessWidget {
               }
 
               },
-              child: SvgPicture.asset(
-                "assets/Icons/Search.svg",
-                width: 24,
-              ),
+              child: Icon(Icons.search,)
             ),
           ),
           border: OutlineInputBorder(

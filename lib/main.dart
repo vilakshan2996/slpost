@@ -4,9 +4,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:flutter_web_plugins/flutter_web_plugins.dart';
-import 'package:seo_renderer/helpers/renderer_state.dart';
-import 'package:seo_renderer/helpers/robot_detector_vm.dart';
+
+import 'package:flutter_web_plugins/url_strategy.dart';
+import 'package:seo/html/seo_controller.dart';
+import 'package:seo/html/tree/widget_tree.dart';
+
 
 
 import 'app/routes/app_pages.dart';
@@ -35,13 +37,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RobotDetector(
+    return  SeoController(
+      enabled: true,
+      tree: WidgetTree(context: context),
       child: GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Srilankan Postal Rate',
-        // navigatorObservers: <NavigatorObserver>[observer],
-         initialRoute: AppPages.INITIAL,
-        getPages: AppPages.routes,
+          debugShowCheckedModeBanner: false,
+          title: 'Srilankan Postal Rate',
+          // navigatorObservers: <NavigatorObserver>[observer],
+           initialRoute: AppPages.INITIAL,
+          getPages: AppPages.routes,
+          
         
       ),
     );
