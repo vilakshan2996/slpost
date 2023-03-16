@@ -2,22 +2,23 @@ import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:seo/html/seo_widget.dart';
+import 'package:seo/seo.dart';
 import 'package:slpost/app/data/models/parcel.dart';
 import 'package:slpost/app/modules/package/views/custom_package.dart';
 import 'package:slpost/app/widgets/custom_input.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../controllers/package_controller.dart';
 
-class PackageView extends GetResponsiveView {
-  
+class PackageView extends GetResponsiveView<PackageController> {
   final List<Rx<ParcelType>> listOfMails;
 
-  PackageView({Key? key, required this.listOfMails}) : super(key: key);
+  PackageView({Key? key, required this.listOfMails}) : super(key: key,alwaysUseBuilder: false);
   final PackageController controller = Get.put(PackageController());
-  
+ 
 
-  
   @override
   Widget? phone() {
     controller.activeListOfParcels = listOfMails;
@@ -25,32 +26,66 @@ class PackageView extends GetResponsiveView {
     return VStack(
       [
         // TODO: Add up your widgets
-       InputWidget(),
+        InputWidget(),
         const SizedBox(
-          height:5,
+          height: 5,
         ),
         buildCountrySelectorWidget(),
-        Expanded(child: ListView.builder(keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,itemCount: listOfMails.length,itemBuilder:(BuildContext context, int index) {
-
-          debugPrint(">>>>>>>>>>> ListView Builder is called <<<<<<<<<<<<<");
-         debugPrint(">>>>>>>>>>> Number of Items in the List View builder is ${listOfMails.length} <<<<<<<<<<<");
-          final int count =
-                    listOfMails.length > 10 ? 10 : listOfMails.length;
-                final Animation<double> animation =
-                    Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-                        parent: controller.animationController!,
-                        curve: Interval((1 / count) * index, 1.0,
-                            curve: Curves.fastOutSlowIn)));
-                controller.animationController?.forward();
-              return CustomPackageView(
-                  packageData: listOfMails[index],
-                  animation: animation,
-                  animationController: controller.animationController!,
-                );
-              } ))
-      ],crossAlignment: CrossAxisAlignment.center,
-      
+        Expanded(
+            child: ListView.builder(
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
+                itemCount: listOfMails.length,
+                itemBuilder: (BuildContext context, int index) {
+                  debugPrint(
+                      ">>>>>>>>>>> ListView Builder is called <<<<<<<<<<<<<");
+                  debugPrint(
+                      ">>>>>>>>>>> Number of Items in the List View builder is ${listOfMails.length} <<<<<<<<<<<");
+                  final int count =
+                      listOfMails.length > 10 ? 10 : listOfMails.length;
+                  final Animation<double> animation =
+                      Tween<double>(begin: 0.0, end: 1.0).animate(
+                          CurvedAnimation(
+                              parent: controller.animationController!,
+                              curve: Interval((1 / count) * index, 1.0,
+                                  curve: Curves.fastOutSlowIn)));
+                  controller.animationController?.forward();
+                  return CustomPackageView(
+                    packageData: listOfMails[index],
+                    animation: animation,
+                    animationController: controller.animationController!,
+                  );
+                }))
+      ],
+      crossAlignment: CrossAxisAlignment.center,
     ).p12();
+  }
+
+ @override
+  Widget? tablet() {
+     controller.activeListOfParcels = listOfMails;
+    // TODO: implement desktop
+    return Scaffold(
+        body: VStack(
+      [
+        Row(
+          // ignore: sort_child_properties_last
+          children: [
+            SizedBox(width: Get.width * 0.2, child: InputWidget()),
+            const SizedBox(
+              width: 10,
+            ),
+            buildCountrySelectorWidget(),
+          ],
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+        ),
+        Expanded(
+          child: ResponsiveCaseGridView(listOfMails: listOfMails, controller: controller,crossAxisCount: 2,),
+        ),
+      ],
+      crossAlignment: CrossAxisAlignment.center,
+    ).p12());
   }
 
   @override
@@ -73,83 +108,111 @@ class PackageView extends GetResponsiveView {
           mainAxisSize: MainAxisSize.min,
         ),
         Expanded(
-          child: GridView.builder(
-              padding:
-                  const EdgeInsets.only(top: 0, bottom: 0, right: 16, left: 16),
-              itemCount: listOfMails.length,
-              itemBuilder: (BuildContext context, int index) {
-                final int count =
-                    listOfMails.length > 10 ? 10 : listOfMails.length;
-                final Animation<double> animation =
-                    Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-                        parent: controller.animationController!,
-                        curve: Interval((1 / count) * index, 1.0,
-                            curve: Curves.fastOutSlowIn)));
-                controller.animationController?.forward();
-
-                return CustomPackageView(
-                  packageData: listOfMails[index],
-                  animation: animation,
-                  animationController: controller.animationController!,
-                );
-              },
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3, childAspectRatio: 1.5)),
+          child: ResponsiveCaseGridView(listOfMails: listOfMails, controller: controller,crossAxisCount: 3,),
         ),
-        VxBox(child: ("Welcome to our app, where you can find the international delivery rate of Sri Lankan Post for various types of mail. Whether you want to send a letter, a packet, an air mail or a sea mail, we have the latest and accurate information for you. You can compare the prices and delivery times of different destinations and choose the best option for your needs. Our app is easy to use and reliable, and we update our data regularly from the official sources. With our app, you can save time and money on your international mail with Sri Lankan Post.").text.makeCentered()).make(),
+       
         
-        VxBox(child: "Don't miss out on our latest updates! Stay tuned and be the first to know about our upcoming releases".text.center.make()).p12.make(),
-        
+        VxBox(
+                child: Seo.text(
+                    style: TextTagStyle.p,
+                    text:
+                        "Don't miss out on our latest updates! Stay tuned and be the first to know about our upcoming releases",
+                    child:
+                        "Don't miss out on our latest updates! Stay tuned and be the first to know about our upcoming releases"
+                            .text
+                            .xl
+                            .center
+                            .make()))
+            .color(Colors.yellow)
+            .p8
+            .make(),
       ],
       crossAlignment: CrossAxisAlignment.center,
     ).p12());
   }
-  
 
   GetX<PackageController> buildCountrySelectorWidget() {
     return GetX<PackageController>(builder: (controller) {
-            return ElevatedButton(
-              onPressed: () {
-                showCountryPicker(
-                  context: Get.context!,
-                  //Optional.  Can be used to exclude(remove) one ore more country from the countries list (optional).
-                  favorite: <String>['US'],
-                  //Optional. Shows phone code before the country name.
-                  showPhoneCode: false,
-                  onSelect: (Country country) {
-                    controller.whenCountrySelected(country);
-                  },
+      return ElevatedButton(
+        onPressed: () {
+          showCountryPicker(
+            context: Get.context!,
+            //Optional.  Can be used to exclude(remove) one ore more country from the countries list (optional).
+            favorite: <String>['US'],
+            //Optional. Shows phone code before the country name.
+            showPhoneCode: false,
+            onSelect: (Country country) {
+              controller.whenCountrySelected(country);
+            },
 
-                  // Optional. Sets the theme for the country list picker.
-                  countryListTheme: CountryListThemeData(
-                    // Optional. Sets the border radius for the bottomsheet.
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(40.0),
-                      topRight: Radius.circular(40.0),
-                    ),
-                    // Optional. Styles the search field.
-                    inputDecoration: InputDecoration(
-                      labelText: 'Search',
-                      hintText: 'Start typing to search',
-                      prefixIcon: const Icon(Icons.search),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: const Color(0xFF8C98A8).withOpacity(0.2),
-                        ),
-                      ),
-                    ),
-                    // Optional. Styles the text in the search field
-                    searchTextStyle: TextStyle(
-                      color: Colors.blue,
-                      fontSize: 18,
-                    ),
+            // Optional. Sets the theme for the country list picker.
+            countryListTheme: CountryListThemeData(
+              // Optional. Sets the border radius for the bottomsheet.
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(40.0),
+                topRight: Radius.circular(40.0),
+              ),
+              // Optional. Styles the search field.
+              inputDecoration: InputDecoration(
+                labelText: 'Search',
+                hintText: 'Start typing to search',
+                prefixIcon: const Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: const Color(0xFF8C98A8).withOpacity(0.2),
                   ),
-                );
-                
-              },
-              child: Text(controller.country.value.name.toString()),
-            );
-          });
+                ),
+              ),
+              // Optional. Styles the text in the search field
+              searchTextStyle: TextStyle(
+                color: Colors.blue,
+                fontSize: 18,
+              ),
+            ),
+          );
+        },
+        child: Text(controller.country.value.name.toString()),
+      );
+    });
+  }
+}
+
+class ResponsiveCaseGridView extends GetResponsiveView {
+   ResponsiveCaseGridView({
+    required this.crossAxisCount,
+    super.key,
+    required this.listOfMails,
+    required this.controller,
+  });
+
+  final List<Rx<ParcelType>> listOfMails;
+  final PackageController controller;
+  final int crossAxisCount;
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+        padding:
+            const EdgeInsets.only(top: 0, bottom: 0, right: 16, left: 16),
+        itemCount: listOfMails.length,
+        itemBuilder: (BuildContext context, int index) {
+          final int count =
+              listOfMails.length > 10 ? 10 : listOfMails.length;
+          final Animation<double> animation =
+              Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+                  parent: controller.animationController!,
+                  curve: Interval((1 / count) * index, 1.0,
+                      curve: Curves.fastOutSlowIn)));
+          controller.animationController?.forward();
+
+          return CustomPackageView(
+            packageData: listOfMails[index],
+            animation: animation,
+            animationController: controller.animationController!,
+          );
+        },
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: crossAxisCount, childAspectRatio: 1.5));
   }
 }
 
