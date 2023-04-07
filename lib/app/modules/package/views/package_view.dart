@@ -1,5 +1,7 @@
+
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ad_manager_web/flutter_ad_manager_web.dart';
 
 import 'package:get/get.dart';
 import 'package:seo/html/seo_widget.dart';
@@ -17,6 +19,21 @@ class PackageView extends GetResponsiveView<PackageController> {
 
   PackageView({Key? key, required this.listOfMails}) : super(key: key,alwaysUseBuilder: false);
   final PackageController controller = Get.put(PackageController());
+
+  String adUnitCode = """  
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1578022559404048"
+     crossorigin="anonymous"></script>
+<!-- srilankan postal -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-1578022559404048"
+     data-ad-slot="5207401478"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+""";
  
 
   @override
@@ -30,35 +47,68 @@ class PackageView extends GetResponsiveView<PackageController> {
         const SizedBox(
           height: 5,
         ),
+
         buildCountrySelectorWidget(),
-        Expanded(
-            child: ListView.builder(
-                keyboardDismissBehavior:
-                    ScrollViewKeyboardDismissBehavior.onDrag,
-                itemCount: listOfMails.length,
-                itemBuilder: (BuildContext context, int index) {
-                  debugPrint(
-                      ">>>>>>>>>>> ListView Builder is called <<<<<<<<<<<<<");
-                  debugPrint(
-                      ">>>>>>>>>>> Number of Items in the List View builder is ${listOfMails.length} <<<<<<<<<<<");
-                  final int count =
-                      listOfMails.length > 10 ? 10 : listOfMails.length;
-                  final Animation<double> animation =
-                      Tween<double>(begin: 0.0, end: 1.0).animate(
-                          CurvedAnimation(
-                              parent: controller.animationController!,
-                              curve: Interval((1 / count) * index, 1.0,
-                                  curve: Curves.fastOutSlowIn)));
-                  controller.animationController?.forward();
-                  return CustomPackageView(
-                    packageData: listOfMails[index],
-                    animation: animation,
-                    animationController: controller.animationController!,
-                  );
-                }))
+//         const SizedBox(
+//           height: 5,
+//         ),  
+//         FlutterAdManagerWeb(  
+        
+//   adUnitCode: adUnitCode,  
+//   height: Get.height*0.4,  
+// ),
+    
+       
+        
+       
+        // ListView.builder(
+        //   physics: NeverScrollableScrollPhysics(),
+        //     keyboardDismissBehavior:
+        //         ScrollViewKeyboardDismissBehavior.onDrag,
+        //     itemCount: listOfMails.length,
+        //     itemBuilder: (BuildContext context, int index) {
+        //       debugPrint(
+        //           ">>>>>>>>>>> ListView Builder is called <<<<<<<<<<<<<");
+        //       debugPrint(
+        //           ">>>>>>>>>>> Number of Items in the List View builder is ${listOfMails.length} <<<<<<<<<<<");
+        //       final int count =
+        //           listOfMails.length > 10 ? 10 : listOfMails.length;
+        //       final Animation<double> animation =
+        //           Tween<double>(begin: 0.0, end: 1.0).animate(
+        //               CurvedAnimation(
+        //                   parent: controller.animationController!,
+        //                   curve: Interval((1 / count) * index, 1.0,
+        //                       curve: Curves.fastOutSlowIn)));
+        //       controller.animationController?.forward();
+        //       return CustomPackageView(
+        //         packageData: listOfMails[index],
+        //         animation: animation,
+        //         animationController: controller.animationController!,
+        //       );
+        //     })
+
+        Column(
+  children: listOfMails.map((packageData) {
+    final int index = listOfMails.indexOf(packageData);
+    debugPrint(">>>>>>>>>>> Column Builder is called <<<<<<<<<<<<<");
+    debugPrint(">>>>>>>>>>> Number of Items in the Column is ${listOfMails.length} <<<<<<<<<<<");
+    final int count = listOfMails.length > 10 ? 10 : listOfMails.length;
+    final Animation<double> animation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: controller.animationController!,
+        curve: Interval((1 / count) * index, 1.0, curve: Curves.fastOutSlowIn),
+      ),
+    );
+    controller.animationController?.forward();
+    return CustomPackageView(
+      packageData: packageData,
+      animation: animation,
+      animationController: controller.animationController!,
+    );
+  }).toList(),)
       ],
       crossAlignment: CrossAxisAlignment.center,
-    ).p12();
+    ).scrollVertical().p12();
   }
 
  @override
@@ -90,6 +140,7 @@ class PackageView extends GetResponsiveView<PackageController> {
 
   @override
   Widget? desktop() {
+    
     controller.activeListOfParcels = listOfMails;
     // TODO: implement desktop
     return Scaffold(
@@ -107,28 +158,22 @@ class PackageView extends GetResponsiveView<PackageController> {
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
         ),
-        Expanded(
+//          FlutterAdManagerWeb(  
+//   adUnitCode: adUnitCode,  
+//   width: 1000,  
+//   height: Get.height*0.3,  
+// ),
+        SizedBox(
+          height: Get.height*0.7,
           child: ResponsiveCaseGridView(listOfMails: listOfMails, controller: controller,crossAxisCount: 3,),
         ),
        
+      
         
-        VxBox(
-                child: Seo.text(
-                    style: TextTagStyle.p,
-                    text:
-                        "Don't miss out on our latest updates! Stay tuned and be the first to know about our upcoming releases",
-                    child:
-                        "Don't miss out on our latest updates! Stay tuned and be the first to know about our upcoming releases"
-                            .text
-                            .xl
-                            .center
-                            .make()))
-            .color(Colors.yellow)
-            .p8
-            .make(),
+     
       ],
       crossAlignment: CrossAxisAlignment.center,
-    ).p12());
+    ).scrollVertical().p12());
   }
 
   GetX<PackageController> buildCountrySelectorWidget() {

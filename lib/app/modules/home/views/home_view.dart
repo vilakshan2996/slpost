@@ -9,6 +9,7 @@ import 'package:sidebarx/sidebarx.dart';
 import 'package:slpost/app/data/constants.dart';
 import 'package:slpost/app/data/models/parcel.dart';
 import 'package:slpost/app/modules/package/views/package_view.dart';
+import 'package:slpost/app/modules/rate/views/rate_view.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../controllers/home_controller.dart';
@@ -156,10 +157,21 @@ class ExampleSidebarX extends StatelessWidget {
             debugPrint('AirMail');
           },
         ),
-        const SidebarXItem(
+         SidebarXItem(
           icon: FontAwesomeIcons.ship,
-          label: 'Sea Mail',
+          label: 'Sea Mail',onTap: () {
+            debugPrint('Sea Mail');
+          },
+          
         ),
+        const SidebarXItem(
+          icon: FontAwesomeIcons.plane,
+          label: 'EMS',
+        ),
+        // SidebarXItem(
+        //   icon:FontAwesomeIcons.dollarSign,
+        //   label:"Dollar Rate",
+        // )
         
       ],
     );
@@ -189,6 +201,13 @@ class _ScreensExample extends StatelessWidget {
             return PackageView(
               listOfMails: Mails.seamails,
             );
+          case 2:
+            return  PackageView(
+              listOfMails: Mails.emsmails,
+              
+            );
+          // case 3:
+          //   return RateView();
           default:
             return Container();
         }

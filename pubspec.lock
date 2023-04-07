@@ -86,7 +86,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: fd23cf522d01a7cf29bf3d0b8beec496425b69e4
+      resolved-ref: "084f637ca16de7f076560cdca1c4771912d20d17"
       url: "https://github.com/vilakshan2996/flutter_country_picker.git"
     source: git
     version: "2.0.20"
@@ -106,6 +106,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
+  dio:
+    dependency: "direct main"
+    description:
+      name: dio
+      sha256: "3e5c4a94d112540d0c9a6b7f3969832e1604eb8cde0f88d0808382f9f632100b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.3"
   fake_async:
     dependency: transitive
     description:
@@ -183,6 +191,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_ad_manager_web:
+    dependency: "direct main"
+    description:
+      name: flutter_ad_manager_web
+      sha256: "855d3c1ba240a9bf5b46e467ece54b1d6517af7f034fe5dfffba5bea00724491"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.1"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -393,6 +409,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
+  pointer_interceptor:
+    dependency: transitive
+    description:
+      name: pointer_interceptor
+      sha256: "6aa680b30d96dccef496933d00208ad25f07e047f644dc98ce03ec6141633a9a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.9.3+4"
   pointycastle:
     dependency: transitive
     description:

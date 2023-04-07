@@ -8,7 +8,10 @@ environment:
 dependencies:
   country_picker:
     git: https://github.com/vilakshan2996/flutter_country_picker.git
+  
+  flutter_ad_manager_web: 
   cupertino_icons: ^1.0.2
+  dio: ^5.0.3
   firebase_analytics: null
   firebase_core: ^2.7.1
   flutter:

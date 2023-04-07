@@ -1,6 +1,8 @@
+
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+
 
 import 'package:get/get.dart';
 
@@ -15,6 +17,7 @@ import 'firebase_options.dart';
 
 void main() async{
    WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -42,7 +45,7 @@ class MyApp extends StatelessWidget {
       child: GetMaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Srilankan Postal Rate',
-           navigatorObservers: <NavigatorObserver>[observer],
+          navigatorObservers: <NavigatorObserver>[observer],
            initialRoute: AppPages.INITIAL,
           getPages: AppPages.routes,
           

@@ -261,7 +261,52 @@ class PostCard extends ParcelType {
 }
 
 
+class EMS extends ParcelType{
+  EMS(
+      {required super.title,
+      required super.startColor,
+      required super.endColor,
+      required super.imagePath,
+       required super.maximumWeight});
 
+
+  @override
+  void findFees(int weight, Country c) {
+    print(".............findFees() PostCard Method called.............");
+          maximumWeight = c.emsMaximum;
+
+    if (weight > c.emsMaximum! * 1000) {
+
+      isWeightExceeded = true;          //blur 
+            return;
+    } else {
+      isWeightExceeded = false;          //no blur
+    }
+
+    
+    if(weight<=250){
+      fees = c.ems![0];
+    }else{
+       int index = ((weight-1) ~/ 500)+1;
+        if (index < c.ems!.length) {
+        fees = c.ems![index];
+        } else {
+          print("Weight value out of range");
+        }
+
+
+
+    }
+
+    
+    
+    
+
+    nonRegisteredFees = fees;
+
+  }
+
+}
 
 
 class Mails {
@@ -310,5 +355,11 @@ class Mails {
         startColor: 0xffA6E3E9,
         endColor: 0xff0E6BA8,
         imagePath: "assets/images/postcard.png").obs
+  ];
+
+
+  static List<Rx<ParcelType>> emsmails = [
+    EMS(title: "EMS", startColor: 0xff738AE6, endColor: 0xff5C5EDD, imagePath:  "assets/images/ems.png",maximumWeight:30).obs
+
   ];
 }

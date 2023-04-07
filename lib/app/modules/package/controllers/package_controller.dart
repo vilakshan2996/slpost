@@ -102,8 +102,10 @@ class PackageController extends GetxController
         if (controller.sidebarXController.selectedIndex == 0) {
           if (country.groupName == "") {
             isAvailabe.value = false;
+            
           } else {
             isAvailabe.value = true;
+           
             calculateFees();
           }
         } else if (controller.sidebarXController.selectedIndex == 1) {
@@ -113,6 +115,13 @@ class PackageController extends GetxController
           } else {
             isAvailabe.value = false;
           }
+        }else if  (controller.sidebarXController.selectedIndex == 2){
+          if (country.ems!=null){
+            
+            calculateFees();
+
+          }
+          
         }
   }
 

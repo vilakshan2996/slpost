@@ -12,7 +12,10 @@ import 'package_view.dart';
 class CustomPackageView extends StatelessWidget {
   final controller = Get.find<PackageController>();
   CustomPackageView(
-      {Key? key, required this.packageData, required this.animationController, required this.animation})
+      {Key? key,
+      required this.packageData,
+      required this.animationController,
+      required this.animation})
       : super(key: key);
 
   final Rx<ParcelType> packageData;
@@ -27,7 +30,7 @@ class CustomPackageView extends StatelessWidget {
         return FadeTransition(
           opacity: animation!,
           child: Transform(
-            transform:Matrix4.translationValues(
+            transform: Matrix4.translationValues(
                 100 * (1.0 - animation!.value), 0.0, 0.0),
             child: SizedBox(
               height: 250,
@@ -89,45 +92,52 @@ class CustomPackageView extends StatelessWidget {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: <Widget>[
-                                          Seo.text(
-                                            text: "Maximum Weight is 2kg",
-                                            child: SelectableText(
-                                              "Maximum Weight : ${packageData.value.maximumWeight}kg",
-                                              style: TextStyle(
-                                                fontFamily:
-                                                    FitnessAppTheme.fontName,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 15,
-                                                letterSpacing: 0.2,
-                                                color: FitnessAppTheme.white,
-                                              ),
-                                            ),
-                                          ),
+                                          Obx(() => Seo.text(
+                                                text: "Maximum Weight is 2kg",
+                                                child: SelectableText(
+                                                  "Maximum Weight : ${packageData.value.maximumWeight}kg",
+                                                  style: TextStyle(
+                                                    fontFamily: FitnessAppTheme
+                                                        .fontName,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 15,
+                                                    letterSpacing: 0.2,
+                                                    color:
+                                                        FitnessAppTheme.white,
+                                                  ),
+                                                ),
+                                              )),
                                         ],
                                       )
                                     : Container(),
-                               Row(
+                                Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Obx(() {
-                                      
-                                    print("Find value method triggered by ${packageData.value.title}");
-                                    print(packageData.value.nonRegisteredFees);
-                                      return ( (packageData.value.nonRegisteredFees !=null )?Seo.text(
-                                        text: "Non registered fee : Lkr",
-                                      child: SelectableText(
-                                            "Non registered fee : Lkr ${packageData.value.nonRegisteredFees}",
-                                            style: TextStyle(
-                                              fontFamily:
-                                                  FitnessAppTheme.fontName,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 15,
-                                              letterSpacing: 0.2,
-                                              color: FitnessAppTheme.white,
-                                            ),
-                                          ),
-                                    ):Container());}),
+                                      print(
+                                          "Find value method triggered by ${packageData.value.title}");
+                                      print(
+                                          packageData.value.fees);
+                                      return ((packageData
+                                                  .value.fees !=
+                                              null)
+                                          ? Seo.text(
+                                              text: "Registered fee : Lkr",
+                                              child: SelectableText(
+                                                "Registered fee : Lkr ${packageData.value.fees}",
+                                                style: TextStyle(
+                                                  fontFamily:
+                                                      FitnessAppTheme.fontName,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 15,
+                                                  letterSpacing: 0.2,
+                                                  color: FitnessAppTheme.white,
+                                                ),
+                                              ),
+                                            )
+                                          : Container());
+                                    }),
                                   ],
                                 ),
                               ],
@@ -139,33 +149,31 @@ class CustomPackageView extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.only(
                                       right: 4, bottom: 3),
-                                  child:SelectableText(
-                                      'Lkr',
-                                      style: TextStyle(
-                                        fontFamily: FitnessAppTheme.fontName,
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 15,
-                                        letterSpacing: 0.2,
-                                        color: FitnessAppTheme.white,
-                                      ),
+                                  child: SelectableText(
+                                    'Lkr',
+                                    style: TextStyle(
+                                      fontFamily: FitnessAppTheme.fontName,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 15,
+                                      letterSpacing: 0.2,
+                                      color: FitnessAppTheme.white,
                                     ),
-                                  
+                                  ),
                                 ),
-                                Obx(()  {
-                                  
-                                  print(packageData.value.fees);
-                                  return  SelectableText(
-                                        "${packageData.value.fees}",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontFamily: FitnessAppTheme.fontName,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 30,
-                                          letterSpacing: 0.2,
-                                          color: FitnessAppTheme.white,
-                                        ),
-                                      
-                                );}),
+                                Obx(() {
+                                  print(packageData.value.nonRegisteredFees);
+                                  return (packageData.value.nonRegisteredFees!=null)?SelectableText(
+                                    "${packageData.value.nonRegisteredFees}",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontFamily: FitnessAppTheme.fontName,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 30,
+                                      letterSpacing: 0.2,
+                                      color: FitnessAppTheme.white,
+                                    ),
+                                  ):Container();
+                                }),
                               ],
                             )
                           ],
@@ -194,36 +202,37 @@ class CustomPackageView extends StatelessWidget {
                       child: Image.asset(packageData.value.imagePath),
                     ),
                   ),
-
-                   Obx(() =>  (packageData.value.isWeightExceeded) ?ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                          child: Container(
-                            child:
-                                Seo.text(text:"Maximum Weight allowed is 2Kg",child: "Maximum Weight Allowed is ${packageData.value.maximumWeight}kg".text.makeCentered()),
+                  Obx(() => (packageData.value.isWeightExceeded)
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                            child: Container(
+                              child:
+                                  "Maximum Weight Allowed is ${packageData.value.maximumWeight}kg"
+                                      .text
+                                      .bold
+                                      .xl2
+                                      .makeCentered(),
+                            ),
                           ),
-                        ),
-                      ):Container()
-                      
-                      ),
-
-                  Obx(() =>  (!controller.isAvailabe.value) ?ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                          child: Container(
-                            child:
-                                Seo.text(text:"Service is not available here",child: "Service Is Not Available".text.makeCentered()),
+                        )
+                      : Container()),
+                  Obx(() => (!controller.isAvailabe.value)
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                            child: Container(
+                              child: Seo.text(
+                                  text: "Service is not available here",
+                                  child: "Service Is Not Available"
+                                      .text
+                                      .makeCentered()),
+                            ),
                           ),
-                        ),
-                      ):Container()
-                      
-                      ),
-                     
-                  
-                      
-                      
+                        )
+                      : Container()),
                 ],
               ),
             ),
@@ -233,4 +242,3 @@ class CustomPackageView extends StatelessWidget {
     );
   }
 }
-
