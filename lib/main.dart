@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
       tree: WidgetTree(context: context),
       child: GetMaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'Srilankan Postal Rate',
+          title: 'Srilankan Postal Rate -- CI/CD Deployment',
           navigatorObservers: <NavigatorObserver>[observer],
            initialRoute: AppPages.INITIAL,
           getPages: AppPages.routes,
